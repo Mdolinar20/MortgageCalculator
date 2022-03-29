@@ -27,11 +27,16 @@ public class Main {
         do {
             System.out.print("Period(Years):");
             period = scanner.nextByte();
-        } while (period <= 0 || period >= 30);
+        } while (period <= 0 || period > 30);
 
         double mortgage = calculateMortgage(principle, annualInterestRate, period);
         String mortgageFormatted = NumberFormat.getCurrencyInstance().format(mortgage);
+        System.out.println("===========");
         System.out.print("Mortgage " + mortgageFormatted);
+        System.out.println();
+        System.out.println("===========");
+
+        balanceRemaining(principle, annualInterestRate, period);
 
     }
 
@@ -50,6 +55,26 @@ public class Main {
                 * ((monthlyInterestRate * (Math.pow((1 + monthlyInterestRate), totalPayments)))
                 /((Math.pow((1 + monthlyInterestRate), totalPayments)) -1)));
 
+    }
+
+
+
+    public static void balanceRemaining(int principle, float annualInterest, byte period){
+        double remaning = principle;
+        byte paymentsMade = 0;
+        final byte monthsInYear = 12;
+        final byte percentage = 10;
+        int totalPayments = period * monthsInYear;
+        float monthlyInterest = annualInterest/monthsInYear/percentage;
+
+        while(remaning > 0){
+            System.out.println(remaning);
+            double balance = principle *
+                    ((Math.pow((1 + monthlyInterest), totalPayments) - (Math.pow((1 + monthlyInterest), paymentsMade)))
+                    / (Math.pow((1 + monthlyInterest), totalPayments) - 1));
+            remaning = balance;
+            paymentsMade ++;
+        }
     }
 
 }
