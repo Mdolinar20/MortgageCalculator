@@ -8,8 +8,6 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        final byte monthsInYear = 12;
-        final byte percentage = 100;
 
 
         int principle;
@@ -24,21 +22,34 @@ public class Main {
             annualInterestRate = scanner.nextFloat();
         } while (!(annualInterestRate > 1) || !(annualInterestRate < 30));
 
-        float monthlyInterestRate = annualInterestRate/monthsInYear/percentage;
 
-        int period;
+        byte period;
         do {
             System.out.print("Period(Years):");
-            period = scanner.nextInt();
+            period = scanner.nextByte();
         } while (period <= 0 || period >= 30);
-        int totalPayments = period * 12;
 
-        double mortgage = principle
-                * ((monthlyInterestRate * (Math.pow((1 + monthlyInterestRate), totalPayments)))
-                /((Math.pow((1 + monthlyInterestRate), totalPayments)) -1));
-
+        double mortgage = calculateMortgage(principle, annualInterestRate, period);
         String mortgageFormatted = NumberFormat.getCurrencyInstance().format(mortgage);
         System.out.print("Mortgage " + mortgageFormatted);
+
+    }
+
+    public static double calculateMortgage(int principle,
+                                           float annualInterestRate,
+                                           byte period){
+        final byte monthsInYear = 12;
+        final byte percentage = 100;
+
+
+        int totalPayments = period * monthsInYear;
+        float monthlyInterestRate = annualInterestRate/monthsInYear/percentage;
+
+        return
+                (principle
+                * ((monthlyInterestRate * (Math.pow((1 + monthlyInterestRate), totalPayments)))
+                /((Math.pow((1 + monthlyInterestRate), totalPayments)) -1)));
+
     }
 
 }
